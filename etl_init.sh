@@ -14,7 +14,8 @@ databricks runs submit --json '{
     {
       "task_key": "notebook-task",
       "notebook_task": {
-        "notebook_path": "/Repos/your-username/your-repo/notebooks/etl_pipeline.py"
+        "notebook_path": "/Repos/sangamdeuja/dbstreamingETL
+/mountcontainer.ipynb"
       },
       "existing_cluster_id": "'"$DB_CLUSTER_ID"'"
     }
