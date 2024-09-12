@@ -4,9 +4,6 @@ data "databricks_current_user" "me" {
 resource "databricks_repo" "repo" {
   url  = "https://github.com/sangamdeuja/dbstreamingETL.git"
   path = "/Repos/sangamdeuja/dbstreamingETL"
-  sparse_checkout {
-    patterns = ["pipeline_scripts/*"]
-  }
 
 }
 
