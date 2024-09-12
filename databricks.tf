@@ -3,7 +3,7 @@ data "databricks_current_user" "me" {
 
 resource "databricks_repo" "repo" {
   url  = "https://github.com/sangamdeuja/dbstreamingETL.git"
-  path = "/Repos/sangamdeuja/dbstreamingETL"
+  path = "/Repos/sangamdeuja/dbstreamingETL/[]"
   sparse_checkout {
     patterns = ["*.ipynb", "*.sh"]
   }
@@ -64,7 +64,11 @@ resource "databricks_cluster" "mycluster" {
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 20
   num_workers             = 1
-
+  init_scripts {
+    workspace {
+      destination = "/Repos/sangamdeuja/dbstreamingETL/init.sh"
+    }
+  }
   depends_on = [
     databricks_repo.repo
   ]
