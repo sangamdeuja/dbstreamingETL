@@ -64,11 +64,19 @@ resource "databricks_cluster" "mycluster" {
   spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 20
-  num_workers             = 0
   init_scripts {
     workspace {
       destination = "/Repos/sangamdeuja/dbstreamingETL/pipeline_scripts/init.sh"
     }
+  }
+  spark_conf = {
+    # Single-node
+    "spark.databricks.cluster.profile" : "singleNode"
+    "spark.master" : "local[*]"
+  }
+
+  custom_tags = {
+    "ResourceClass" = "SingleNode"
   }
   depends_on = [
     databricks_repo.repo
