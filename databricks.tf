@@ -3,10 +3,11 @@ data "databricks_current_user" "me" {
 
 resource "databricks_repo" "repo" {
   url  = "https://github.com/sangamdeuja/dbstreamingETL.git"
-  path = "/Repos/sangamdeuja/dbstreamingETL/[]"
+  path = "/Repos/sangamdeuja/dbstreamingETL"
   sparse_checkout {
-    patterns = ["*.ipynb", "*.sh"]
+    patterns = ["pipeline_scripts"]
   }
+
 }
 
 # Create a Databricks secret scope
@@ -66,7 +67,7 @@ resource "databricks_cluster" "mycluster" {
   num_workers             = 1
   init_scripts {
     workspace {
-      destination = "/Repos/sangamdeuja/dbstreamingETL/init.sh"
+      destination = "/Repos/sangamdeuja/dbstreamingETL/pipeline_scripts/init.sh"
     }
   }
   depends_on = [
