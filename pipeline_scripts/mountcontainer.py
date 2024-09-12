@@ -1,3 +1,10 @@
+from pyspark.dbutils import DBUtils
+from pyspark.sql import SparkSession
+
+# Initialize dbutils for standalone Python scripts
+spark = SparkSession.builder.getOrCreate()
+dbutils = DBUtils(spark)
+
 def mount_storage():
     # Fetch the secrets from the Databricks scope
     storage_account_name = dbutils.secrets.get(scope="azure-creds-scope", key="storage_account_name")
