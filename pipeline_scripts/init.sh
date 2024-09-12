@@ -1,11 +1,12 @@
 #!/bin/bash
 
+# Pull workspace scope secrets
+STORAGE_ACCOUNT_NAME={{secrets/azure-creds-scope/storage_account_name}}
+APP_ID={{secrets/azure-creds-scope/app_id}}
+TENANT_ID={{secrets/azure-creds-scope/tenant_id}}
+CLIENT_SECRET={{secrets/azure-creds-scope/client-secret}}
 
-# Define the Azure AD credentials and storage account information using Databricks secrets
-STORAGE_ACCOUNT_NAME=$(databricks secrets get --scope azure-creds-scope --key storage_account_name)
-APP_ID=$(databricks secrets get --scope azure-creds-scope --key app-id)
-TENANT_ID=$(databricks secrets get --scope azure-creds-scope --key tenant-id)
-CLIENT_SECRET=$(databricks secrets get --scope azure-creds-scope --key client-secret)
+
 
 # Configuration parameters for mounting the Azure Data Lake Storage
 CONFIGS=(
@@ -17,7 +18,7 @@ CONFIGS=(
 )
 
 MOUNT_POINT="/mnt/dataprocessing"
-SOURCE_URI="abfss://dataprocessing@${STORAGE_ACCOUNT_NAME}.dfs.core.windows.net/"
+# SOURCE_URI="abfss://dataprocessing@${STORAGE_ACCOUNT_NAME}.dfs.core.windows.net/"
 
 # Function to check if the mount already exists
 mount_exists() {
@@ -25,18 +26,34 @@ mount_exists() {
 }
 
 # Mount the Azure Data Lake if not already mounted
-if mount_exists; then
-  echo "Already mounted!"
+# Install blobfuse if not already installed
+if ! command -v blobfuse &> /dev/null; then
+    echo "blobfuse not found, installing..."
+    sudo apt-get update
+    sudo apt-get install -y blobfuse
+fi
+
+# Create a directory for the mount point if it doesn't exist
+if [ ! -d "${MOUNT_POINT}" ]; then
+    sudo mkdir -p "${MOUNT_POINT}"
+fi
+
+# Create a directory for blobfuse configuration
+if [ ! -d "/mnt/resource/blobfusetmp" ]; then
+    sudo mkdir -p /mnt/resource/blobfusetmp
+fi
+
+# Create a fuse connection using blobfuse
+echo "Mounting storage with blobfuse..."
+sudo blobfuse ${MOUNT_POINT} --container-name=${CONTAINER_NAME} \
+    --tmp-path=/mnt/resource/blobfusetmp \
+    --account-name=${STORAGE_ACCOUNT_NAME} \
+    --account-key=${AZURE_STORAGE_KEY} \
+    -o attr_timeout=240 -o entry_timeout=240 -o negative_timeout=120 \
+    --log-level=LOG_DEBUG
+
+if [ $? -eq 0 ]; then
+    echo "Container mounted successfully at ${MOUNT_POINT}!"
 else
-  echo "Mounting storage..."
-  databricks fs mount \
-    --source "${SOURCE_URI}" \
-    --mount-point "${MOUNT_POINT}" \
-    --extra-configs "${CONFIGS[@]}"
-  
-  if [ $? -eq 0 ]; then
-    echo "Container mounted successfully!"
-  else
     echo "Failed to mount container."
-  fi
 fi
