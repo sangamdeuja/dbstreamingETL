@@ -1,0 +1,51 @@
+# Local .terraform directories
+**/.terraform/*
+.terraform.lock.hcl
+
+# Ignore override files as they are usually used to override resources
+*.tfvars
+*.tfvars.json
+
+# Ignore sensitive variable definition files, such as secrets or credentials
+secret.tfvars
+private.tfvars
+
+# Terraform state files
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
+
+# Crash log files from Terraform
+crash.log
+
+# Exclude plan output files which might be large
+*.tfplan
+
+# Exclude .DS_Store (for macOS users)
+.DS_Store
+
+# Ignore .log and .bak files
+*.log
+*.bak
+
+# Ignore temporary files
+*.tmp
+
+# Ignore editor-specific files (like from Vim, VS Code, etc.)
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Ignore Python virtual environments
+venv/
+.env/
+
+# Ignore compiled files (if you have some)
+*.pyc
+*.class
+
+# Ignore other sensitive or environment-specific files
+*.env
+
