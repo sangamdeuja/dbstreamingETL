@@ -5,7 +5,7 @@ resource "databricks_repo" "repo" {
   url  = "https://github.com/sangamdeuja/dbstreamingETL.git"
   path = "/Repos/sangamdeuja/dbstreamingETL"
   sparse_checkout {
-    patterns = ["pipeline_scripts"]
+    patterns = ["!/pipeline_scripts/*"]
   }
 
 }
@@ -64,7 +64,7 @@ resource "databricks_cluster" "mycluster" {
   spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 20
-  num_workers             = 1
+  num_workers             = 0
   init_scripts {
     workspace {
       destination = "/Repos/sangamdeuja/dbstreamingETL/pipeline_scripts/init.sh"
