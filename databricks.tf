@@ -50,7 +50,7 @@ data "databricks_spark_version" "latest_lts" {
 
 
 resource "databricks_notebook" "notebook_1" {
-  path       = "/Repos/sangamdeuja/dbstreamingETL/pipeline_scripts/mountcontainer"
+  path       = "./pipeline_scripts/mountcontainer"
   depends_on = [databricks_repo.repo]
 }
 
