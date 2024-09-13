@@ -51,7 +51,7 @@ data "databricks_spark_version" "latest_lts" {
 
 
 resource "databricks_notebook" "notebook_1" {
-  source = "${path.module}/dbstreamingETL/pipeline_scripts/mountcontainer.ipynb"
+  source = "${path.module}/pipeline_scripts/mountcontainer.ipynb"
   path   = "${data.databricks_current_user.me.home}/mountnotebook/mountcontainer"
 
 }
