@@ -125,7 +125,8 @@ resource "databricks_job" "this" {
     }
   }
   task {
-    task_key = "task1"
+    job_cluster_key = "a"
+    task_key        = "task1"
     notebook_task {
       notebook_path = databricks_notebook.notebook_1.path
 
