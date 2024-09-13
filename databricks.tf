@@ -49,10 +49,13 @@ data "databricks_spark_version" "latest_lts" {
 }
 
 
+
 resource "databricks_notebook" "notebook_1" {
-  path       = "/pipeline_scripts/mountcontainer.ipynb"
-  depends_on = [databricks_repo.repo]
+  source = "${path.module}/dbstreamingETL/pipeline_scripts/mountcontainer.ipynb"
+  path   = "${data.databricks_current_user.me.home}/mountnotebook/mountcontainer"
+
 }
+
 
 /*resource "databricks_notebook" "notebook_2" {
   path = "${data.databricks_current_user.me.home}/Repos/sangamdeuja/dbstreamingETL/deltapipeline"
