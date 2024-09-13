@@ -68,9 +68,21 @@ resource "databricks_cluster" "mycluster" {
   }
   spark_conf = {
     # Single-node
-    "spark.databricks.cluster.profile" : "singleNode"
-    "spark.master" : "local[*]"
+    "spark.databricks.cluster.profile" = "singleNode"
+    "spark.master"                     = "local[*]"
 
+  }
+  spark_env_vars = {
+    STORAGE_ACCOUNT_NAME = databricks_secret.storage-secret.string_value
+    APP_ID               = databricks_secret.app_id_secret.string_value
+    TENANT_ID            = databricks_secret.tenant_id_secret.string_value
+    CLIENT_SECRET        = databricks_secret.client_secret.string_value
+
+  }
+  cluster_log_conf {
+    dbfs {
+      destination = "dbfs:/cluster-logs"
+    }
   }
 
   custom_tags = {
