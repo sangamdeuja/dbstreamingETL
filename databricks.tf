@@ -81,13 +81,13 @@ resource "databricks_cluster" "mycluster" {
   }
   library {
     maven {
-      coordinates = "org.apache.hadoop:hadoop-azure:3.2.1"
+      coordinates = "org.apache.hadoop:hadoop-azure:3.3.4"
     }
   }
 
   library {
     maven {
-      coordinates = "com.microsoft.azure:azure-storage:8.6.6"
+      coordinates = "com.azure:azure-storage-blob:12.27.0"
     }
   }
 
