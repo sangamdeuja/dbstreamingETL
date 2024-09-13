@@ -1,10 +1,17 @@
 #!/bin/bash
 
-# Pull workspace scope secrets
-STORAGE_ACCOUNT_NAME={{secrets/azure-creds-scope/storage_account_name}}
-APP_ID={{secrets/azure-creds-scope/app_id}}
-TENANT_ID={{secrets/azure-creds-scope/tenant_id}}
-CLIENT_SECRET={{secrets/azure-creds-scope/client-secret}}
+# Ensure jq is installed for JSON parsing
+if ! command -v jq &> /dev/null; then
+    echo "jq not found, installing..."
+    sudo apt-get update
+    sudo apt-get install -y jq
+fi
+
+# Pull secrets from environment variables set via spark_conf
+STORAGE_ACCOUNT_NAME=${STORAGE_ACCOUNT_NAME}
+APP_ID=${app_id}
+TENANT_ID=${tenant_id}
+CLIENT_SECRET=${client_secret}
 
 CONTAINER_NAME="dataprocessing"
 MOUNT_POINT="/mnt/dataprocessing"
@@ -28,14 +35,16 @@ fi
 
 # Authenticate using OAuth2
 echo "Fetching OAuth2 token..."
-ACCESS_TOKEN=$(curl -X POST "https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/token" \
+RESPONSE=$(curl -s -X POST "https://login.microsoftonline.com/${TENANT_ID}/oauth2/v2.0/token" \
   -d "grant_type=client_credentials" \
   -d "client_id=${APP_ID}" \
   -d "client_secret=${CLIENT_SECRET}" \
-  -d "scope=https://storage.azure.com/.default" | jq -r .access_token)
+  -d "scope=https://storage.azure.com/.default")
+ACCESS_TOKEN=$(echo $RESPONSE | jq -r .access_token)
 
-if [ -z "$ACCESS_TOKEN" ]; then
+if [ -z "$ACCESS_TOKEN" ] || [ "$ACCESS_TOKEN" == "null" ]; then
   echo "Failed to fetch OAuth2 token"
+  echo "Response was: $RESPONSE"
   exit 1
 fi
 

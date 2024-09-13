@@ -70,6 +70,10 @@ resource "databricks_cluster" "mycluster" {
     # Single-node
     "spark.databricks.cluster.profile" : "singleNode"
     "spark.master" : "local[*]"
+    "spark.env.storage_account_name" = "{{secrets/azure-creds-scope/storage_account_name}}"
+    "spark.env.app-id"               = "{{secrets/azure-creds-scope/app-id}}"
+    "spark.env.tenant-id"            = "{{secrets/azure-creds-scope/tenant-id}}"
+    "spark.env.client-secret"        = "{{secrets/azure-creds-scope/client-secret}}"
   }
 
   custom_tags = {
