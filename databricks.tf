@@ -13,21 +13,21 @@ resource "databricks_secret_scope" "azure_creds_scope" {
 }
 
 resource "databricks_secret" "app_id_secret" {
-  key          = "app-id"
+  key          = "app_id"
   string_value = azuread_application.etl_app.client_id # Value for the secret from a variable
   scope        = databricks_secret_scope.azure_creds_scope.name
 }
 
 # Store the tenant_id in the secret scope
 resource "databricks_secret" "tenant_id_secret" {
-  key          = "tenant-id"
+  key          = "tenant_id"
   string_value = data.azurerm_client_config.current.tenant_id # Value for the secret from a variable
   scope        = databricks_secret_scope.azure_creds_scope.name
 }
 
 # Store the client_secret in the secret scope
 resource "databricks_secret" "client_secret" {
-  key          = "client-secret"
+  key          = "client_secret"
   string_value = azuread_service_principal_password.etl_sp_password.value # Value for the secret from a variable
   scope        = databricks_secret_scope.azure_creds_scope.name
 }
@@ -71,9 +71,9 @@ resource "databricks_cluster" "mycluster" {
     "spark.databricks.cluster.profile" : "singleNode"
     "spark.master" : "local[*]"
     "spark.env.storage_account_name" = "{{secrets/azure-creds-scope/storage_account_name}}"
-    "spark.env.app-id"               = "{{secrets/azure-creds-scope/app-id}}"
-    "spark.env.tenant-id"            = "{{secrets/azure-creds-scope/tenant-id}}"
-    "spark.env.client-secret"        = "{{secrets/azure-creds-scope/client-secret}}"
+    "spark.env.app_id"               = "{{secrets/azure-creds-scope/app_id}}"
+    "spark.env.tenant_id"            = "{{secrets/azure-creds-scope/tenant_id}}"
+    "spark.env.client_secret"        = "{{secrets/azure-creds-scope/client_secret}}"
   }
 
   custom_tags = {
