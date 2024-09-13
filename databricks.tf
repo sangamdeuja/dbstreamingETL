@@ -63,7 +63,7 @@ resource "databricks_cluster" "mycluster" {
   autotermination_minutes = 20
   init_scripts {
     workspace {
-      destination = "/Repos/sangamdeuja/dbstreamingETL/pipeline_scripts/init.sh"
+      destination = "/Repos/sangamdeuja/dbstreamingETL/pipeline_scripts/test.sh"
     }
   }
   spark_conf = {
