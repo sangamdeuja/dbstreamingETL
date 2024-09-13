@@ -121,10 +121,7 @@ resource "databricks_job" "this" {
     new_cluster {
       spark_version = data.databricks_spark_version.latest_lts.id
       node_type_id  = data.databricks_node_type.smallest.id
-      spark_conf = {
-        "spark.databricks.cluster.profile" = "singleNode"
-        "spark.master"                     = "local[*]"
-      }
+      num_workers   = 1
     }
   }
   task {
