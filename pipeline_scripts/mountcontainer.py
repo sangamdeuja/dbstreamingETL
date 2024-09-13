@@ -8,9 +8,9 @@ dbutils = DBUtils(spark)
 def mount_storage():
     # Fetch the secrets from the Databricks scope
     storage_account_name = dbutils.secrets.get(scope="azure-creds-scope", key="storage_account_name")
-    app_id = dbutils.secrets.get(scope="azure-creds-scope", key="app-id")
-    tenant_id = dbutils.secrets.get(scope="azure-creds-scope", key="tenant-id")
-    client_secret = dbutils.secrets.get(scope="azure-creds-scope", key="client-secret")
+    app_id = dbutils.secrets.get(scope="azure-creds-scope", key="app_id")
+    tenant_id = dbutils.secrets.get(scope="azure-creds-scope", key="tenant_id")
+    client_secret = dbutils.secrets.get(scope="azure-creds-scope", key="client_secret")
 
     # Define the configuration for mounting
     configs = {
