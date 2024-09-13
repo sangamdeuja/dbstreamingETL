@@ -1,18 +1,35 @@
 #!/bin/bash
 
-
+# Environment variables (use export or pass them when running the script)
 STORAGE_ACCOUNT_NAME=$STORAGE_ACCOUNT_NAME
 APP_ID=$APP_ID
 TENANT_ID=$TENANT_ID
 CLIENT_SECRET=$CLIENT_SECRET
 
-
 CONTAINER_NAME="dataprocessing"
 MOUNT_POINT="/mnt/dataprocessing"
 
-# Install blobfuse if not already installed
+# Install dependencies if they are not installed
+if ! command -v curl &> /dev/null; then
+    echo "curl not found, installing..."
+    sudo apt-get update
+    sudo apt-get install -y curl
+fi
+
+if ! command -v jq &> /dev/null; then
+    echo "jq not found, installing..."
+    sudo apt-get install -y jq
+fi
+
+# Add the Microsoft repository and install blobfuse
 if ! command -v blobfuse &> /dev/null; then
-    echo "blobfuse not found, installing..."
+    echo "blobfuse not found, adding repository and installing..."
+    
+    # Add Microsoft repository and keys for blobfuse
+    wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+    sudo dpkg -i packages-microsoft-prod.deb
+    
+    # Install blobfuse
     sudo apt-get update
     sudo apt-get install -y blobfuse
 fi
@@ -22,7 +39,7 @@ if [ ! -d "${MOUNT_POINT}" ]; then
     sudo mkdir -p "${MOUNT_POINT}"
 fi
 
-# Create a directory for blobfuse temporary cache
+# Create a directory for blobfuse temporary cache if it doesn't exist
 if [ ! -d "/mnt/resource/blobfusetmp" ]; then
     sudo mkdir -p /mnt/resource/blobfusetmp
 fi

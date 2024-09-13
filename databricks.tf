@@ -79,6 +79,18 @@ resource "databricks_cluster" "mycluster" {
     CLIENT_SECRET        = databricks_secret.client_secret.string_value
 
   }
+  library {
+    maven {
+      coordinates = "org.apache.hadoop:hadoop-azure:3.2.1"
+    }
+  }
+
+  library {
+    maven {
+      coordinates = "com.microsoft.azure:azure-storage:8.6.6"
+    }
+  }
+
   cluster_log_conf {
     dbfs {
       destination = "dbfs:/cluster-logs"
