@@ -16,14 +16,8 @@ jobs:
       with:
         fetch-depth: 1
 
-    - name: Install Databricks CLI
-      run: |
-        pip install --upgrade requests
-        pip install --upgrade databricks-cli
-
     - name: Configure Databricks CLI
-      run: |
-        databricks configure --token
+      uses: databricks/setup-cli@main
       env:
         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
