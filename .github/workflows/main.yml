@@ -24,10 +24,6 @@ jobs:
 
     - name: Sync pipeline_scripts folder to Databricks Repo
       run: |
-        databricks repos update --path "/Repos/sangamdeuja/dbstreamingETL" --sparse-checkout-patterns "pipeline_scripts/**"
+        databricks repos update --path "/Repos/sangamdeuja/dbstreamingETL"
 
-      # The following step pushes only the pipeline_scripts folder to Databricks Repo
-      working-directory: ./pipeline_scripts
-      env:
-        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+     
