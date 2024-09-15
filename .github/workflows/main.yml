@@ -12,14 +12,14 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 1
 
     - name: Install Databricks CLI
       run: |
-        pip3 install --upgrade requests
-        pip3 install --upgrade databricks-cli
+        pip install --upgrade requests
+        pip install --upgrade databricks-cli
 
     - name: Configure Databricks CLI
       run: |
