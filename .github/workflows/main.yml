@@ -24,6 +24,6 @@ jobs:
 
     - name: Sync pipeline_scripts folder to Databricks Repo
       run: |
-        databricks repos update --path "/Repos/sangamdeuja/dbstreamingETL"
+        databricks repos update "/Repos/sangamdeuja/dbstreamingETL"
 
      
