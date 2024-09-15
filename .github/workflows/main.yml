@@ -18,11 +18,11 @@ jobs:
 
     - name: Configure Databricks CLI
       uses: databricks/setup-cli@main
+
+    - name: Sync pipeline_scripts folder to Databricks Repo
       env:
         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-
-    - name: Sync pipeline_scripts folder to Databricks Repo
       run: |
         databricks repos update "/Repos/sangamdeuja/dbstreamingETL"
 
