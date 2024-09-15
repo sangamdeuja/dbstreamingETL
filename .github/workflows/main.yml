@@ -1,0 +1,38 @@
+name: Sync pipeline_scripts to Databricks Repo
+
+on:
+  push:
+    paths:
+      - "pipeline_scripts/**"   # Trigger only when changes occur in the pipeline_scripts folder
+  workflow_dispatch:
+
+jobs:
+  sync-to-databricks:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Install Databricks CLI
+      run: |
+        pip install --upgrade databricks-cli
+
+    - name: Configure Databricks CLI
+      run: |
+        databricks configure --token
+      env:
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+
+    - name: Sync pipeline_scripts folder to Databricks Repo
+      run: |
+        databricks repos update --path "/Repos/sangamdeuja/dbstreamingETL" --sparse-checkout-patterns "pipeline_scripts/**"
+
+      # The following step pushes only the pipeline_scripts folder to Databricks Repo
+      working-directory: ./pipeline_scripts
+      env:
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
