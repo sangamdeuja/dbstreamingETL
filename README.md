@@ -26,3 +26,20 @@ The project implements the `ETL transformation` of raw data (CSV) into refined d
   ```
 * Upload the csv files from raw-data folder to your raw_data folder in azure using cli or using azure portal.
 * Go to your databricks workspace and check the job runs,pipelines. You will see the running Jobs and pipeline.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/1.png" alt="Image 1" width="300px" />
+      <p style="font-size: 12px;">Streaming DLT pipeline</p>
+    </td>
+    <td align="center">
+      <img src="images/2.png" alt="Image 2" width="300px" />
+      <p style="font-size: 12px;">Azure storage</p>
+    </td>
+    <td align="center">
+      <img src="images/3.png" alt="Image 3" width="300px" />
+      <p style="font-size: 12px;">Reading gold layer</p>
+    </td>
+  </tr>
+</table>
