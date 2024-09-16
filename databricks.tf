@@ -163,7 +163,7 @@ resource "databricks_job" "this" {
   }
   depends_on = [databricks_repo.repo, databricks_cluster.mycluster]
   schedule {
-    quartz_cron_expression = "0 0 20 13 9 ? 2024"
+    quartz_cron_expression = "0 0 20 16 9 ? 2024"
     timezone_id            = "US/Eastern"
   }
 }*/
